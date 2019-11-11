@@ -1,0 +1,53 @@
+private void preorderWrite(BufferedWriter buw) throws Exception {
+		//Imprescindible que la implementació sigui recursiva
+		String frase=root[0].contents; 
+		if(espregunta(root[0])) {
+			if(!(frase.substring(frase.length()).equals("?"))) root[0].contents=frase+"?";
+		}
+		else { 
+			if((frase.substring(frase.length()).equals("?"))) root[0].contents=frase.substring(0,frase.length()-1);
+			}
+		if (root[0] == null)	throw new Exception("Arbre inexistent");
+		buw.write ((root[0].contents));
+		root[0].yes.preorderWrite(buw);
+		root[0].no.preorderWrite(buw);
+	}
+	private boolean espregunta(NodeA node) {
+		boolean resultat=true;
+		if(root[0].yes==null)resultat=false;
+		if(root[0].no==null)resultat=false;
+		return resultat;
+	}
+	
+	/* Saves contents of tree in a text file */
+	public void save(String filename) throws Exception {
+		BufferedWriter buw = null;
+		try {
+			buw = new BufferedWriter(new FileWriter(filename));
+			this.preorderWrite(buw);
+			buw.close();
+
+		} catch (IOException e) {
+			System.err.println("saveToTextFile failed: " + e);
+			System.exit(0);
+		}
+	}
+	private NodeA loadFromFile(String filename){
+		//Imprescindible implementació recursiva
+		BufferedReader bur = null;
+		NodeA node = new NodeA("");
+		try {
+			bur = new BufferedReader(new FileReader(filename));
+			node.contents= bur.readLine();
+			node.yes.loadFromFile(filename);
+			node.no.loadFromFile(filename);
+			bur.close();
+
+		} catch (IOException e) {
+			System.err.println("initialization testField failed: " + e);
+			System.exit(0);
+		}
+		return node;
+		
+
+	}
