@@ -14,7 +14,7 @@ public class Joc {
 		System.out.println("Primer de tot, vols carregar un fitxer? ('Si' o 'No')");
 		missatge = comprovador(missatge); // TODO input carrega fitxer
 		if (missatge.equals("Si")) {
-			// TODO fer implementació de fitxers;
+			System.out.println("Perfecte! Digues el nom del fitxer que vols carregar!");
 			arrel = null;
 		} else {
 			System.out.println("Perfecte! Per començar afageix una pregunta");
@@ -51,7 +51,7 @@ public class Joc {
 					}
 				} else {
 					if (aux.prgNo().atAnswer()) {
-						System.out.println(aux.getContents());
+						System.out.println(aux.prgNo().getContents());
 						System.out.println("Es aquest l'animal que pensaves? ('Si' o 'No')");
 						missatge = comprovador(missatge);
 						if (missatge.equals("Si")) {
@@ -75,6 +75,17 @@ public class Joc {
 				arrel.rewind();
 			} else {
 				continuar = false;
+			}
+		}
+		System.out.println("Vols guardar l'arbre en un fitxer? ('Si' o 'No')");
+		missatge = comprovador(missatge);
+		if (missatge.equals("Si")) {
+			System.out.println("Indica nom del fitxer:");
+			missatge = Keyboard.readString();
+			try {
+				arrel.save(missatge);
+			} catch (Exception e) {
+				System.out.println("Error");
 			}
 		}
 
