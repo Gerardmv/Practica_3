@@ -5,7 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Stack;
 
 
 public class ArbreB {
@@ -35,7 +34,7 @@ public class ArbreB {
 		root[0] = null;
 	}	
 	public ArbreB(String filename) throws Exception{
-		root[0] = new NodeA(filename);
+		root[0] = this.loadFromFile(filename);
 	}
 
 	/* PUBLIC METHODS */
@@ -165,5 +164,6 @@ public class ArbreB {
 		/* COMPLETE */
 		// Visualitza a pantalla les preguntes
 		// Imprescindible invocar a un màtode la classe NodeA
+		
 	}
 }
