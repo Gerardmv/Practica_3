@@ -1,4 +1,92 @@
-private void preorderWrite(BufferedWriter buw) throws Exception {
+package Estructura;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Stack;
+
+
+public class ArbreB {
+	private class NodeA {
+		String contents;
+		ArbreB yes, no;	
+		NodeA(String contents) {
+			//Constructor 1. Inicialitza als atributys yes i no a null
+			this(contents,null,null);
+		}
+		NodeA(String pregunta, ArbreB a1, ArbreB a2) {
+			//Constructor 2. Crea el node i l'inicialitza amb els paràmetres
+			this.contents = pregunta;
+			this.yes = a1;
+			this.no = a2;
+		}
+	}
+	// Atributs: Taula de 2 posicions
+	private NodeA[] root = {null, null};
+
+	/* CONSTRUCTORS */
+	public ArbreB(ArbreB a1, ArbreB a2, String pregunta) {
+		//Constructor 1. Crea un arbre amb una pregunta i dos respostes
+		root[0] = new NodeA(pregunta, a1, a2);
+	}
+	public ArbreB() {
+		root[0] = null;
+	}	
+	public ArbreB(String filename) throws Exception{
+		root[0] = new NodeA(filename);
+	}
+
+	/* PUBLIC METHODS */
+	public boolean isEmpty() {
+		return this.root == null;
+	}
+	
+	public NodeA[] arrel() {
+		return this.root;
+	}
+	
+	public ArbreB prgYes() {
+		return this.root[0].yes;
+	}
+	
+	public ArbreB prgNo() {
+		return this.root[0].no;
+	}
+	
+	public void rewind() {
+		this.root[1] = this.root[0];
+	}
+	/* True if the current node is an answer (a leaf) */
+	public boolean atAnswer() {
+		//COMPLETE
+		return root[0].no==null && root[0].yes==null;
+	}
+	/* move current to yes-descendant of itself */
+	public void moveToYes() {
+		root[0].yes = new ArbreB(null, null, this.getContents()); 
+	}
+	/* move current to yes-descendant of itself */
+	public void moveToNo() {
+		root[0].no = new ArbreB(null, null, this.getContents());
+	}
+	/* get the contents of the current node */
+	public String getContents() {
+		return root[0].contents;
+	}
+	 /* Substituir la informació del node actual
+	 * per la pregunta donada pel jugador. Previament crear el node que serà el
+	 * seu fill dret, resposta no encertada, amb la informació del node actual.
+	 */
+	public void improve(String question, String answer) {
+		this.moveToNo();
+		this.root[0].contents = answer;
+		this.moveToYes();
+		this.root[0].contents = question;
+		
+	}
+	private void preorderWrite(BufferedWriter buw) throws Exception {
 		//Imprescindible que la implementació sigui recursiva
 		String frase=root[0].contents; 
 		if(espregunta(root[0])) {
@@ -18,7 +106,6 @@ private void preorderWrite(BufferedWriter buw) throws Exception {
 		if(root[0].no==null)resultat=false;
 		return resultat;
 	}
-	
 	/* Saves contents of tree in a text file */
 	public void save(String filename) throws Exception {
 		BufferedWriter buw = null;
@@ -51,3 +138,32 @@ private void preorderWrite(BufferedWriter buw) throws Exception {
 		
 
 	}
+	public void visualitzarAnimals() {
+		/* Following the guidelines indicated in the statement of practice */
+		if (this.root[0].no == null && this.root[0].yes == null) {
+			System.out.println(this.root[0].contents);
+		}
+		else {
+			this.root[0].no.visualitzarAnimals();
+			this.root[0].yes.visualitzarAnimals();
+		}
+		
+		
+	}
+	public int quantsAnimals() {
+		
+		return 0;
+		/* Following the guidelines indicated in the statement of practice */
+		/* COMPLETE */
+	}
+	public int alsada() {
+		return 0;
+		/* COMPLETE */
+		// Imprescindible invocar a un mètode la classe NodeA
+	}
+	public void mostraPreguntes() {
+		/* COMPLETE */
+		// Visualitza a pantalla les preguntes
+		// Imprescindible invocar a un màtode la classe NodeA
+	}
+}
