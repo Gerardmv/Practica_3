@@ -42,6 +42,7 @@ public class Joc {
 		}
 		while (continuar) {
 			while (!trobat) {
+				System.out.println("Alçada: "+arrel.alsada());
 				System.out.println(arrel.getContents());
 				missatge = comprovador();
 				if (missatge.equalsIgnoreCase("Si")) {
@@ -49,7 +50,7 @@ public class Joc {
 						comprovarresultat(arrel.prgYes());
 						trobat = true;
 					} else {
-						arrel = arrel.prgYes();
+						arrel.arrel()[1] = arrel.prgYes().arrel()[1];
 					}
 				}
 
@@ -59,7 +60,7 @@ public class Joc {
 						comprovarresultat(arrel.prgNo());
 						trobat = true;
 					} else {
-						arrel = arrel.prgNo();
+						arrel.arrel()[1] = arrel.prgNo().arrel()[1];
 					}
 				}	
 			}
@@ -68,7 +69,6 @@ public class Joc {
 			missatge = comprovador();
 			if (missatge.equalsIgnoreCase("Si")) {
 				trobat = false;
-				System.out.println("Alçada: "+arrel.alsada());
 			} else {
 				continuar = false;
 			}
