@@ -17,11 +17,43 @@ public class ArbreB {
 			this(contents,null,null);
 		}
 		NodeA(String pregunta, ArbreB a1, ArbreB a2) {
-			//Constructor 2. Crea el node i l'inicialitza amb els par‡metres
+			//Constructor 2. Crea el node i l'inicialitza amb els par√†metres
 			this.contents = pregunta;
 			this.yes = a1;
 			this.no = a2;
 		}
+		public void visualitzarAnimalsA() {
+			/* Following the guidelines indicated in the statement of practice */
+			if (!contents.substring(contents.length()-1).equals("?")) {
+				System.out.println(contents);
+			}
+			if(yes!=null) yes.root[0].visualitzarAnimalsA();
+			if(no!=null)	no.root[0].visualitzarAnimalsA();
+			}
+		public int quantsAnimalsA() {
+			int resultat=0;
+			if (contents.substring(contents.length()-1).equals("?")) resultat++;
+		
+			if(yes!=null)yes.root[0].quantsAnimalsA();
+			if(no!=null)no.root[0].quantsAnimalsA();
+			return resultat;
+			/* Following the guidelines indicated in the statement of practice */
+			/* COMPLETE */
+		}
+		public int alsadaA() {
+			return 0;
+			/* COMPLETE */
+			// Imprescindible invocar a un m√®tode la classe NodeA
+		}
+		public void mostraPreguntesA() {
+			/* COMPLETE */
+			// Visualitza a pantalla les preguntes
+			// Imprescindible invocar a un m√†tode la classe NodeA
+			if (contents.substring(contents.length()-1).equals("?")) System.out.println(contents);
+			if(yes!=null)yes.root[0].mostraPreguntesA();
+			if(no!=null)no.root[0].mostraPreguntesA();
+		}
+		
 	}
 	// Atributs: Taula de 2 posicions
 	private NodeA[] root = {null, null};
@@ -34,9 +66,9 @@ public class ArbreB {
 	public ArbreB() {
 		root[0] = null;
 	}	
-	public ArbreB(String filename) throws Exception{
+public ArbreB(String filename) throws Exception{
 		root[0] = this.loadFromFile(filename);
-	}
+		root[1]=root[0];	}
 
 	/* PUBLIC METHODS */
 	public boolean isEmpty() {
@@ -75,9 +107,9 @@ public class ArbreB {
 	public String getContents() {
 		return root[0].contents;
 	}
-	 /* Substituir la informaciÛ del node actual
-	 * per la pregunta donada pel jugador. Previament crear el node que ser‡ el
-	 * seu fill dret, resposta no encertada, amb la informaciÛ del node actual.
+	 /* Substituir la informaci√≥ del node actual
+	 * per la pregunta donada pel jugador. Previament crear el node que ser√† el
+	 * seu fill dret, resposta no encertada, amb la informaci√≥ del node actual.
 	 */
 	public void improve(String question, String answer) {
 		this.moveToNo();
@@ -87,7 +119,7 @@ public class ArbreB {
 		
 	}
 	private void preorderWrite(BufferedWriter buw) throws Exception {
-		//Imprescindible que la implementaciÛ sigui recursiva
+		//Imprescindible que la implementaci√≥ sigui recursiva
 		if (this.isEmpty())	throw new Exception("Arbre inexistent");
 		
 		String frase=this.getContents(); 
@@ -119,64 +151,72 @@ public void save(String filename) throws Exception {
 		}
 	}
 private NodeA loadFromFile(String filename){
-		//Imprescindible implementaciÛ recursiva
+		//Imprescindible implementaci√≥ recursiva
 		BufferedReader bur = null;
-		NodeA node = new NodeA("");
+		NodeA node;
+		
 		try {
 			bur = new BufferedReader(new FileReader(filename));
-			node.contents= bur.readLine();
-			node.yes.loadFromFile(filename);
-			node.no.loadFromFile(filename);
+			node= rrecore(bur);
 			bur.close();
+			return node;
 
 		} catch (IOException e) {
 			System.err.println("initialization testField failed: " + e);
 			System.exit(0);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+private NodeA rrecore(BufferedReader bur) {
+	NodeA node;
+	try {
+	node = new NodeA(bur.readLine());
+		if(node.contents.substring(node.contents.length()-1).equals("?")) {
+		if(node.yes==null) {
+		node.yes=new ArbreB();
+		node.yes.root[0] = node.yes.rrecore(bur);
+		}
+		if(node.no==null) {
+		node.no= new ArbreB();
+		node.no.root[0] = node.no.rrecore(bur);
+		}
 		}
 		return node;
+		
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
+	return null;
+	
+}
 	
 	public void visualitzarAnimals() {
 		/* Following the guidelines indicated in the statement of practice */
-		if (this.atAnswer()) {
-			System.out.println(this.getContents());
-		}
-		else {
-			this.prgYes().visualitzarAnimals();
-			this.prgNo().visualitzarAnimals();
-		}
-		
-		
+		if (root[0]!=null) root[0].visualitzarAnimalsA();		
 	}
 	public int quantsAnimals() {
 		int resultat=0;
-		if (this.atAnswer()) {
-			resultat++;
-		}
-		else {
-			this.prgYes().visualitzarAnimals();
-			this.prgNo().visualitzarAnimals();
-		}
+		if (root[0]!=null) 	resultat= root[0].quantsAnimalsA();	
 		return resultat;
 		/* Following the guidelines indicated in the statement of practice */
 		/* COMPLETE */
 	}
 	public int alsada() {
-		return 0;
+		int resultat=0;
+		if (root[0]!=null) 	resultat= root[0].alsadaA();	
+		return resultat;
 		/* COMPLETE */
-		// Imprescindible invocar a un mËtode la classe NodeA
+		// Imprescindible invocar a un m√®tode la classe NodeA
 	}
 	public void mostraPreguntes() {
 		/* COMPLETE */
 		// Visualitza a pantalla les preguntes
-		// Imprescindible invocar a un m‡tode la classe NodeA
-		if (!this.atAnswer()) {
-			System.out.println(this.getContents());
-		}
-		else {
-			this.prgYes().visualitzarAnimals();
-			this.prgNo().visualitzarAnimals();
-		}
+		// Imprescindible invocar a un m√†tode la classe NodeA
+		if (root[0]!=null) root[0].mostraPreguntesA();
 		
 	}
 }
