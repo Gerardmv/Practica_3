@@ -12,12 +12,25 @@ public class Joc {
 
 		System.out.println("Benvingut al joc dels animals");
 		System.out.println("Primer de tot, vols carregar un fitxer? ('Si' o 'No')");
-		missatge = comprovador(); // TODO input carrega fitxer
-		if (missatge.equals("Si")) {
+		missatge = comprovador(); // TODO input carrega fitxersi
+		if (missatge.equalsIgnoreCase("Si")) {
 			System.out.println("Perfecte! Digues el nom del fitxer que vols carregar!");
-			arrel = null;
+			missatge= Keyboard.readString();
+			try {
+				arrel = new ArbreB(missatge);
+			} catch (Exception e) {
+			System.out.println("El document no existeix");
+			}
+			System.out.println("L'arbre conté els següents animals:");
+			arrel.visualitzarAnimals();
+			System.out.println("En total té: " + arrel.quantsAnimals());
+			System.out.println("L'alçada és de: " + arrel.alsada());
+			System.out.println("Vols visualitzar les preguntes del arbre?");
+			missatge= comprovador();
+			if(missatge.equalsIgnoreCase("si")) arrel.mostraPreguntes();
+			System.out.println("JUGEM!!!");
 		} else {
-			System.out.println("Perfecte! Per comen�ar afageix una pregunta");
+			System.out.println("Perfecte! Per començar afageix una pregunta");
 			System.out.println("Indica la pregunta de l'arrel de l'arbre");
 			missatge = Keyboard.readString();
 			System.out.println("Indica Animal per Si");
@@ -52,7 +65,7 @@ public class Joc {
 			}
 			System.out.println("Vols seguir jugant? ('Si' o 'No')");
 			missatge = comprovador();
-			if (missatge.equals("Si")) {
+			if (missatge.equalsIgnoreCase("Si")) {
 				trobat = false;
 				arrel.rewind();
 			} else {
@@ -61,7 +74,7 @@ public class Joc {
 		}
 		System.out.println("Vols guardar l'arbre en un fitxer? ('Si' o 'No')");
 		missatge = comprovador();
-		if (missatge.equals("Si")) {
+		if (missatge.equalsIgnoreCase("Si")) {
 			System.out.println("Indica nom del fitxer:");
 			missatge = Keyboard.readString();
 			try {
@@ -97,7 +110,7 @@ public class Joc {
 
 	private static String comprovador() {
 		String missatge = Keyboard.readString();
-		while (!missatge.equals("Si") && !missatge.equals("No")) {
+		while (!missatge.equalsIgnoreCase("Si") && !missatge.equalsIgnoreCase("No")) {
 			System.out.println("Siusplau, escriu 'Si' o 'No'");
 			missatge = Keyboard.readString();
 		}
