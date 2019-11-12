@@ -78,6 +78,7 @@ public class ArbreB {
 	public ArbreB(ArbreB a1, ArbreB a2, String pregunta) {
 		// Constructor 1. Crea un arbre amb una pregunta i dos respostes
 		root[0] = new NodeA(pregunta, a1, a2);
+		root[1] = root[0];
 	}
 
 	public ArbreB() {
@@ -99,11 +100,11 @@ public class ArbreB {
 	}
 
 	public ArbreB prgYes() {
-		return this.root[0].yes;
+		return this.root[1].yes;
 	}
 
 	public ArbreB prgNo() {
-		return this.root[0].no;
+		return this.root[1].no;
 	}
 
 	public void rewind() {
@@ -113,22 +114,22 @@ public class ArbreB {
 	/* True if the current node is an answer (a leaf) */
 	public boolean atAnswer() {
 		// COMPLETE
-		return root[0].no == null && root[0].yes == null;
+		return root[1].no == null && root[1].yes == null;
 	}
 
 	/* move current to yes-descendant of itself */
 	public void moveToYes() {
-		root[0].yes = new ArbreB(null, null, this.getContents());
+		root[1].yes = new ArbreB(null, null, this.getContents());
 	}
 
 	/* move current to yes-descendant of itself */
 	public void moveToNo() {
-		root[0].no = new ArbreB(null, null, this.getContents());
+		root[1].no = new ArbreB(null, null, this.getContents());
 	}
 
 	/* get the contents of the current node */
 	public String getContents() {
-		return root[0].contents;
+		return root[1].contents;
 	}
 
 	/*
@@ -138,9 +139,9 @@ public class ArbreB {
 	 */
 	public void improve(String answer, String question) {
 		this.moveToNo();
-		this.root[0].contents = answer;
+		this.root[1].contents = answer;
 		this.moveToYes();
-		this.root[0].contents = question;
+		this.root[1].contents = question;
 
 	}
 
@@ -153,10 +154,10 @@ public class ArbreB {
 
 		if (this.atAnswer()) {
 			if (!(frase.substring(frase.length() - 1).equals("?")))
-				root[0].contents = frase + "?";
+				root[1].contents = frase + "?";
 		} else {
 			if ((frase.substring(frase.length() - 1).equals("?")))
-				root[0].contents = frase.substring(0, frase.length() - 2);
+				root[1].contents = frase.substring(0, frase.length() - 2);
 		}
 		buw.write(frase);
 		buw.newLine();
@@ -205,10 +206,12 @@ public class ArbreB {
 				if (node.yes == null) {
 					node.yes = new ArbreB();
 					node.yes.root[0] = node.yes.loadR(bur);
+					node.yes.root[1] = node.yes.root[0];
 				}
 				if (node.no == null) {
 					node.no = new ArbreB();
 					node.no.root[0] = node.no.loadR(bur);
+					node.no.root[1] = node.no.root[0];
 				}
 			}
 			return node;
