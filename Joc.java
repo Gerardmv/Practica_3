@@ -15,19 +15,20 @@ public class Joc {
 		missatge = comprovador(); // TODO input carrega fitxersi
 		if (missatge.equalsIgnoreCase("Si")) {
 			System.out.println("Perfecte! Digues el nom del fitxer que vols carregar!");
-			missatge= Keyboard.readString();
+			missatge = Keyboard.readString();
 			try {
 				arrel = new ArbreB(missatge);
 			} catch (Exception e) {
-			System.out.println("El document no existeix");
+				System.out.println("El document no existeix");
 			}
 			System.out.println("L'arbre conté els següents animals:");
 			arrel.visualitzarAnimals();
 			System.out.println("En total té: " + arrel.quantsAnimals());
 			System.out.println("L'alçada és de: " + arrel.alsada());
 			System.out.println("Vols visualitzar les preguntes del arbre?");
-			missatge= comprovador();
-			if(missatge.equalsIgnoreCase("si")) arrel.mostraPreguntes();
+			missatge = comprovador();
+			if (missatge.equalsIgnoreCase("si"))
+				arrel.mostraPreguntes();
 			System.out.println("JUGEM!!!");
 		} else {
 			System.out.println("Perfecte! Per començar afageix una pregunta");
@@ -42,32 +43,35 @@ public class Joc {
 		ArbreB aux = arrel;
 		while (continuar) {
 			while (!trobat) {
-				actualitzar(arrel, aux);
 				System.out.println(aux.getContents());
 				missatge = comprovador();
-				
-				if (missatge.equals("Si")) {
+				if (missatge.equalsIgnoreCase("Si")) {
 					if (aux.prgYes().atAnswer()) {
-						trobat= comprovarresultat(aux.prgYes());
+						comprovarresultat(aux.prgYes());
+						trobat = true;
 					} else {
 						aux = aux.prgYes();
 					}
-				} 
-				
+				}
+
 				else {
 					if (aux.prgNo().atAnswer()) {
-						
-						trobat = comprovarresultat(aux.prgNo());
+
+						comprovarresultat(aux.prgNo());
+						trobat = true;
 					} else {
 						aux = aux.prgNo();
 					}
-				}
+				}	
 			}
+			arrel.rewind();
+			aux = arrel;
 			System.out.println("Vols seguir jugant? ('Si' o 'No')");
 			missatge = comprovador();
 			if (missatge.equalsIgnoreCase("Si")) {
 				trobat = false;
 				arrel.rewind();
+				System.out.println("Alçada: "+arrel.alsada());
 			} else {
 				continuar = false;
 			}
@@ -85,27 +89,21 @@ public class Joc {
 		}
 
 	}
-	
-	private static boolean comprovarresultat(ArbreB aux) {
+
+	private static void comprovarresultat(ArbreB aux) {
 		String missatge, animal1;
 		System.out.println(aux.getContents());
 		System.out.println("Es aquest l'animal que pensaves? ('Si' o 'No')");
-		 missatge = comprovador();
-		if (missatge.equals("Si")) return true;
+		missatge = comprovador();
+		if (missatge.equals("Si"))
+			System.out.println("L'he endivinat!!!");
 		else {
 			System.out.println("Digues nom animal que has pensat");
 			missatge = Keyboard.readString();
 			System.out.println("Pregunta per poder reconeixer-lo");
 			animal1 = Keyboard.readString();
 			aux.improve(missatge, animal1);
-			return false;
 		}
-	}
-
-	private static void actualitzar(ArbreB arrel, ArbreB aux) {
-		if (arrel.prgYes() != null) actualitzar(arrel.prgYes(), aux);
-		arrel.arrel()[1] = aux.arrel()[0];
-		if (arrel.prgNo() != null) actualitzar(arrel.prgNo(), aux);
 	}
 
 	private static String comprovador() {
