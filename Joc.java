@@ -50,7 +50,7 @@ public class Joc {
 						comprovarresultat(arrel.prgYes());
 						trobat = true;
 					} else {
-						arrel.arrel()[1] = arrel.prgYes().arrel()[1];
+						arrel.arrel()[1] = arrel.prgYes().arrel()[0];
 					}
 				}
 
@@ -60,7 +60,7 @@ public class Joc {
 						comprovarresultat(arrel.prgNo());
 						trobat = true;
 					} else {
-						arrel.arrel()[1] = arrel.prgNo().arrel()[1];
+						arrel.arrel()[1] = arrel.prgNo().arrel()[0];
 					}
 				}	
 			}
