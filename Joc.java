@@ -40,37 +40,34 @@ public class Joc {
 			animal2 = Keyboard.readString();
 			arrel = new ArbreB(new ArbreB(null, null, animal1), new ArbreB(null, null, animal2), missatge);
 		}
-		ArbreB aux = arrel;
 		while (continuar) {
 			while (!trobat) {
-				System.out.println(aux.getContents());
+				System.out.println(arrel.getContents());
 				missatge = comprovador();
 				if (missatge.equalsIgnoreCase("Si")) {
-					if (aux.prgYes().atAnswer()) {
-						comprovarresultat(aux.prgYes());
+					if (arrel.prgYes().atAnswer()) {
+						comprovarresultat(arrel.prgYes());
 						trobat = true;
 					} else {
-						aux = aux.prgYes();
+						arrel = arrel.prgYes();
 					}
 				}
 
 				else {
-					if (aux.prgNo().atAnswer()) {
+					if (arrel.prgNo().atAnswer()) {
 
-						comprovarresultat(aux.prgNo());
+						comprovarresultat(arrel.prgNo());
 						trobat = true;
 					} else {
-						aux = aux.prgNo();
+						arrel = arrel.prgNo();
 					}
 				}	
 			}
 			arrel.rewind();
-			aux = arrel;
 			System.out.println("Vols seguir jugant? ('Si' o 'No')");
 			missatge = comprovador();
 			if (missatge.equalsIgnoreCase("Si")) {
 				trobat = false;
-				arrel.rewind();
 				System.out.println("Alçada: "+arrel.alsada());
 			} else {
 				continuar = false;
